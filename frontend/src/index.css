@@ -1,0 +1,168 @@
+/* //src/index.css */
+
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* ---------------- Fonts ---------------- */
+@font-face {
+  font-family: "TexasCrust";
+  src: url("/fonts/TexasCrustPersonalUseReg-w1nrw.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  /* ĐỔI TÊN cho khớp với biến theme và class font-kurohe */
+  font-family: "Kurohe";
+  src: url("/fonts/KuroheRegular-drXE7.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* ---------------- Theme (Tailwind v4 + DaisyUI) ---------------- */
+@theme {
+  /* Font family */
+  --font-texas: "TexasCrust", serif; /* font tiêu đề */
+  --font-kurohe: "Kurohe", serif;     /* font chính */
+}
+
+@plugin "daisyui/theme" {
+  name: "vintage";
+
+  prefersdark: true;
+  color-scheme: dark;
+
+  --color-base-100: #3E3F29;
+  --color-base-200: #2A2B1E;
+  --color-base-300: #1F2016;
+  --color-base-content: #F1F0E4;
+
+  --color-primary: #BCA88D;
+  --color-primary-content: #3E3F29;
+
+  --color-secondary: #7D8D86;
+  --color-secondary-content: #F1F0E4;
+
+  --color-accent: #3E3F29;
+  --color-accent-content: #F1F0E4;
+
+  --color-neutral: #2A2B1E;
+  --color-neutral-content: #F1F0E4;
+
+  --color-success: #6B8E23;
+  --color-success-content: #F1F0E4;
+
+  --color-warning: #D9A05B;
+  --color-warning-content: #3E3F29;
+
+  --color-error: #A94438;
+  --color-error-content: #F1F0E4;
+
+  --color-info: #7498A8;
+  --color-info-content: #F1F0E4;
+
+  /* Radius / Sizes / Effects */
+  --radius-selector: 1rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
+@plugin "daisyui/theme" {
+  name: "red-vintage-love";
+
+  prefersdark: true;
+  color-scheme: dark;
+
+  /* Chủ đạo: đỏ đô */
+  --color-primary: #8C1007;           /* đỏ đô chính */
+  --color-primary-content: #FFF0C4;   /* chữ be trên nền đỏ */
+
+  /* Nút phụ: đỏ nâu tối */
+  --color-secondary: #660B05;
+  --color-secondary-content: #FFF0C4;
+
+  /* Accent: điểm nhấn đỏ trầm */
+  --color-accent: #3E0703;
+  --color-accent-content: #FFF0C4;
+
+  /* Nền tối & chữ sáng */
+  --color-neutral: #3E0703;
+  --color-neutral-content: #FFF0C4;
+
+  /* Nền sáng vintage */
+  --color-base-100: #FFF0C4;   /* nền chính vàng kem */
+  --color-base-200: #F2E3B3;   /* sáng hơn để tách section */
+  --color-base-300: #E5D49E;   /* tối hơn chút cho khối */
+  --color-base-content: #3E0703; /* chữ đỏ trầm trên nền sáng */
+
+  /* Trạng thái */
+  --color-info: #A94442;     /* đỏ nâu cảnh báo */
+  --color-success: #7D9A50;  /* xanh olive nhẹ */
+  --color-warning: #D4A64E;  /* vàng đất vintage */
+  --color-error: #B3392B;    /* đỏ gạch */
+
+  /* Bo góc / Kích thước / Hiệu ứng */
+  --radius-selector: 1rem;
+  --radius-field: 0.375rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0.05; /* nhẹ thôi, giả texture */
+}
+
+@plugin "daisyui" {
+  themes: ["vintage", "red-vintage-love"]
+  defaultTheme: "red-vintage-love"
+  logs: false
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* này dành cho Tailwind v4, có Daisyui r thì khỏi @theme {
+  --color-base-100: #3E3F29;
+  --color-base-200: #2A2B1E;
+  --color-base-300: #1F2016;
+  --color-base-content: #F1F0E4;
+
+  --color-primary: #BCA88D;
+  --color-primary-content: #3E3F29;
+
+  --color-secondary: #7D8D86;
+  --color-secondary-content: #F1F0E4;
+
+  --color-accent: #3E3F29;
+  --color-accent-content: #F1F0E4;
+
+  --color-neutral: #2A2B1E;
+  --color-neutral-content: #F1F0E4;
+
+  --color-success: #6B8E23;
+  --color-success-content: #F1F0E4;
+
+  --color-warning: #D9A05B;
+  --color-warning-content: #3E3F29;
+
+  --color-error: #A94438;
+  --color-error-content: #F1F0E4;
+
+  --color-info: #7498A8;
+  --color-info-content: #F1F0E4;
+} */
+
+/* Fix autofill màu input */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #E5D49E inset; /* nền be */
+  -webkit-text-fill-color: #3E0703; /* chữ đỏ trầm */
+  transition: background-color 5000s ease-in-out 0s;
+}

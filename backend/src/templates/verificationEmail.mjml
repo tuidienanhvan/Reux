@@ -1,0 +1,38 @@
+<mjml>
+  <mj-head>
+    <mj-attributes>
+      <mj-all font-family="Arial, sans-serif" />
+    </mj-attributes>
+  </mj-head>
+
+  <mj-body background-color="<%= colors.bgMain %>">
+    <!-- Section chính -->
+    <mj-section background-color="<%= colors.bgCard %>" padding="20px">
+      <mj-column>
+        <mj-image src="https://images.unsplash.com/photo-1460467820054-c87ab43e9b59?q=80&w=1967&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Logo" width="300px" />
+        
+        <mj-text font-size="24px" color="<%= colors.textPrimary %>" align="center" font-weight="bold">
+          Xác Minh Tài Khoản
+        </mj-text>
+        <mj-text font-size="16px" color="<%= colors.textSecondary %>" align="center">
+          Xin chào, cảm ơn bạn đã đăng ký!
+        </mj-text>
+        <mj-text font-size="16px" color="<%= colors.textSecondary %>" align="center">
+          Vui lòng nhấp vào nút bên dưới để xác minh địa chỉ email của bạn.
+        </mj-text>
+        <mj-button background-color="<%= colors.primary %>" color="<%= colors.textInvert %>" align="center" href="<%= verificationUrl %>">
+          Xác Minh Email
+        </mj-button>
+      </mj-column>
+    </mj-section>
+
+    <!-- Footer -->
+    <mj-section background-color="<%= colors.bgFooter %>" padding="10px">
+      <mj-column>
+        <mj-text font-size="12px" color="<%= colors.textInvert %>" align="center">
+          &copy; 2025 Your Company. All rights reserved.
+        </mj-text>
+      </mj-column>
+    </mj-section>
+  </mj-body>
+</mjml>

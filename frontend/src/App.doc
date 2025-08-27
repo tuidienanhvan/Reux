@@ -1,0 +1,203 @@
+import React, { useEffect, useRef, lazy, Suspense } from 'react';
+import { Routes, Route } from 'react-router-dom';
+
+import FullScreenLoader from './components/FullScreenLoader';
+import NavBar from './components/Navbar';
+import ProtectedRoute from './components/ProtectedRoute';
+import PublicRoute from './components/PublicRoute';
+import { useAuthStore } from './store/useAuthStore';
+import background1 from './assets/background1.svg';
+
+// Lazy load các trang với xử lý lỗi
+const HomePage = lazy(() =>
+  import('./pages/HomePage.jsx').catch((error) => {
+    console.error('Failed to load HomePage:', error);
+    return { default: () => <div>Lỗi tải trang chủ</div> };
+  })
+);
+const LoginPage = lazy(() =>
+  import('./pages/AuthPages/LoginPage.jsx').catch((error) => {
+    console.error('Failed to load LoginPage:', error);
+    return { default: () => <div>Lỗi tải trang đăng nhập</div> };
+  })
+);
+const RegisterPage = lazy(() =>
+  import('./pages/AuthPages/RegisterPage.jsx').catch((error) => {
+    console.error('Failed to load RegisterPage:', error);
+    return { default: () => <div>Lỗi tải trang đăng ký</div> };
+  })
+);
+const VerifyEmailPage = lazy(() =>
+  import('./pages/AuthPages/VerifyEmailPage.jsx').catch((error) => {
+    console.error('Failed to load VerifyEmailPage:', error);
+    return { default: () => <div>Lỗi tải trang xác minh email</div> };
+  })
+);
+const UnlockAccountPage = lazy(() =>
+  import('./pages/AuthPages/UnlockAccountPage.jsx').catch((error) => {
+    console.error('Failed to load UnlockAccountPage:', error);
+    return { default: () => <div>Lỗi tải trang mở khóa tài khoản</div> };
+  })
+);
+const RequestPasswordChangePage = lazy(() =>
+  import('./pages/AuthPages/RequestPasswordChangePage.jsx').catch((error) => {
+    console.error('Failed to load RequestPasswordChangePage:', error);
+    return { default: () => <div>Lỗi tải trang yêu cầu đổi mật khẩu</div> };
+  })
+);
+const ConfirmPasswordChangePage = lazy(() =>
+  import('./pages/AuthPages/ConfirmPasswordChangePage.jsx').catch((error) => {
+    console.error('Failed to load ConfirmPasswordChangePage:', error);
+    return { default: () => <div>Lỗi tải trang xác nhận đổi mật khẩu</div> };
+  })
+);
+const UpdateProfilePage = lazy(() =>
+  import('./pages/AuthPages/UpdateProfilePage.jsx').catch((error) => {
+    console.error('Failed to load UpdateProfilePage:', error);
+    return { default: () => <div>Lỗi tải trang cập nhật hồ sơ</div> };
+  })
+);
+const NotFoundPage = lazy(() =>
+  import('./pages/NotFoundPage.jsx').catch((error) => {
+    console.error('Failed to load NotFoundPage:', error);
+    return { default: () => <div>Lỗi tải trang 404</div> };
+  })
+);
+
+// Component chính của ứng dụng
+const App = () => {
+  const bgRef = useRef(null);
+  const hasChecked = useRef(false);
+  const checkAuth = useAuthStore((state) => state.checkAuth);
+  const isCheckingAuth = useAuthStore((state) => state.isCheckingAuth);
+  const authUser = useAuthStore((state) => state.authUser);
+
+  // Kiểm tra xác thực khi ứng dụng khởi động
+  useEffect(() => {
+    if (hasChecked.current) return;
+    hasChecked.current = true;
+    console.log('Starting auth check...');
+    checkAuth().then((result) => {
+      console.log('Auth check result:', result);
+    });
+  }, [checkAuth]);
+
+  // Preload các trang quan trọng
+  useEffect(() => {
+    console.log('Preloading pages...');
+    Promise.all([
+      import('./pages/HomePage.jsx').catch((error) => console.error('Preload HomePage failed:', error)),
+      import('./pages/AuthPages/LoginPage.jsx').catch((error) => console.error('Preload LoginPage failed:', error)),
+      import('./pages/AuthPages/RegisterPage.jsx').catch((error) => console.error('Preload RegisterPage failed:', error)),
+    ]).then(() => console.log('Preload completed'));
+  }, []);
+
+  // Hiển thị loader khi đang kiểm tra xác thực
+  if (isCheckingAuth && !authUser) {
+    console.log('Showing FullScreenLoader due to isCheckingAuth:', isCheckingAuth);
+    return <FullScreenLoader />;
+  }
+
+  return (
+    <div className="relative min-h-screen">
+      {/* Hình nền SVG được tối ưu hóa */}
+      <picture>
+        <source srcSet={background1} type="image/svg+xml" />
+        <img
+          ref={bgRef}
+          src={background1}
+          alt="Background"
+          className="absolute inset-0 object-cover w-full h-full"
+          loading="eager"
+          decoding="async"
+        />
+      </picture>
+
+      {/* Lớp phủ màu với transition mượt mà */}
+      <div className="absolute inset-0 bg-neutral/60 transition-opacity duration-300"></div>
+
+      {/* Nội dung chính */}
+      <div className="relative z-10">
+        <NavBar />
+        
+        {/* Sử dụng Suspense với fallback tối ưu */}
+        <Suspense
+          fallback={<FullScreenLoader timeout={5000} timeoutMessage="Lỗi tải trang. Vui lòng làm mới." />}
+        >
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <HomePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/login"
+              element={
+                <PublicRoute>
+                  <LoginPage />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <PublicRoute>
+                  <RegisterPage />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/verify-email"
+              element={
+                <PublicRoute>
+                  <VerifyEmailPage />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/unlock-account"
+              element={
+                <PublicRoute>
+                  <UnlockAccountPage />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/request-password-change"
+              element={
+                <PublicRoute>
+                  <RequestPasswordChangePage />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/confirm-password-change"
+              element={
+                <PublicRoute>
+                  <ConfirmPasswordChangePage />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/update-profile"
+              element={
+                <ProtectedRoute>
+                  <UpdateProfilePage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="*"
+              element={<NotFoundPage />}
+            />
+          </Routes>
+        </Suspense>
+      </div>
+    </div>
+  );
+};
+
+export default React.memo(App);
