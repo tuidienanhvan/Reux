@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import FullScreenLoader from './components/FullScreenLoader';
-import NavBar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
 import { useSocketStore } from './stores/useSocketStore';
