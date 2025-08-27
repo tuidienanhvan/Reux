@@ -118,7 +118,6 @@ const App = () => {
         </picture>
         <div className="absolute inset-0 bg-neutral/60 transition-opacity duration-300"></div>
         <div className="relative z-10">
-          <NavBar />
           <Suspense
             fallback={<FullScreenLoader timeout={5000} timeoutMessage="Error loading page. Please refresh." />}
           >
